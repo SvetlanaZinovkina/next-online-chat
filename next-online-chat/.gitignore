@@ -8,11 +8,11 @@
 /.vscode
 # testing
 /coverage
-
+/.vscode
 # next.js
 /.next/
 /out/
-
+/.history
 # production
 /build
 
