@@ -1,5 +1,5 @@
 const routes = {
-  defaultApiPath: () => "/api/v1",
+  defaultApiPath: () => "http://localhost:5001/api/v1",
   notFoundPage: () => "*",
   mainPage: () => "/",
   loginPage: () => "/login",

@@ -1,9 +1,10 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import Cookies from "js-cookie";
-import routes from "../routes/routes.js";
+import routes from "@/routes/routes.js";
 
 const baseQuery = fetchBaseQuery({
   baseUrl: routes.defaultApiPath(),
+  credentials: "include",
   prepareHeaders: (headers) => {
     const token = Cookies.get("token");
     if (token) {
@@ -11,7 +12,6 @@ const baseQuery = fetchBaseQuery({
     }
     return headers;
   },
-  credentials: "include",
 });
 
 const api = createApi({

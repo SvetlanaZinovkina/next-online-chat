@@ -7,6 +7,7 @@ const initialState = {
   username: "",
   role: "",
   token: "",
+  avatar_path: "",
 };
 
 const userSlice = createSlice({

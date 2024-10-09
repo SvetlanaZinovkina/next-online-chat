@@ -1,14 +1,18 @@
-"use client";
-
 import Link from "next/link";
 import React from "react";
+import { useDispatch } from "react-redux";
+import { useRouter } from "next/navigation";
 import { Formik, Form, Field, ErrorMessage } from "formik";
+import Cookies from "js-cookie";
 import * as Yup from "yup";
 import routes from "../routes/routes";
-import { useCreateUserMutation } from "../store/api";
+import { useCreateUserMutation } from "@/store/api";
+import { setUser } from "@/store/slices/usersSlice";
 
 const SignUpPage = () => {
   const [createUser] = useCreateUserMutation();
+  const dispatch = useDispatch();
+  const router = useRouter();
 
   const signUpSchema = Yup.object().shape({
     username: Yup.string()
@@ -27,14 +31,15 @@ const SignUpPage = () => {
   const handleSubmit = async ({ username, email, password }, { resetForm }) => {
     try {
       const response = await createUser({ username, email, password });
-
-      if ("error" in response) {
-        const error = new Error();
-        error.statusCode = response.error.status;
-        throw error;
+      if (!response || response.error) {
+        throw new Error(response.error || "Unknown error");
       }
-      setUser(response.data.token, response.data.username);
-      navigate("/");
+      const { token, user_id, username, role, avatar_path } = response.data;
+      Cookies.set("token", token);
+      dispatch(setUser({ token, id: user_id, username, role, avatar_path }));
+
+      router.push("/");
+
       resetForm();
     } catch (error) {
       if (error.statusCode === 409) {
@@ -140,7 +145,7 @@ const SignUpPage = () => {
                   : "bg-purple-500 hover:bg-purple-600"
               }`}
             >
-              Войти
+              Регистрация
             </button>
           </Form>
         )}

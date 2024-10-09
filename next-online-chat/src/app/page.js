@@ -12,8 +12,11 @@ export default function Home() {
   const router = useRouter();
 
   useEffect(() => {
-    const token = Cookies.get("token");
+    const token = Cookies.get('token');
+    console.log(token);
+
     if (!token) router.push(routes.signUpPage());
+
     socket.on("connection", () => {
       console.log("Connected to server");
     });

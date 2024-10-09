@@ -1,10 +1,19 @@
 import Link from "next/link";
 import React from "react";
+import { useDispatch } from "react-redux";
+import { useRouter } from "next/navigation";
+import { useLoginMutation } from "@/store/api";
 import { Formik, Form, Field, ErrorMessage } from "formik";
+import Cookies from "js-cookie";
 import * as Yup from "yup";
 import routes from "../routes/routes";
+import { setUser } from "@/store/slices/usersSlice";
 
 const LoginPage = () => {
+  const [login] = useLoginMutation();
+  const dispatch = useDispatch();
+  const router = useRouter();
+
   const loginInSchema = Yup.object().shape({
     email: Yup.string()
       .email("Неправильный формат email")
@@ -15,10 +24,38 @@ const LoginPage = () => {
       .required("Обязательное поле"),
   });
 
-  const handleSubmit = (values, { resetForm }) => {
-    console.log("Submitted values: ", values);
-    // Логика для отправки формы
-    resetForm();
+  const handleSubmit = async ({ email, password }, { resetForm }) => {
+    try {
+      const response = await login({ email, password });
+
+      if (!response || response.error) {
+        throw new Error(response.error || "Unknown error");
+      }
+      const { token, user_id, username, role, avatar_path } = response.data;
+
+      dispatch(
+        setUser({
+          id: user_id,
+          username,
+          role,
+          token,
+          avatar_path,
+        })
+      );
+      Cookies.set("token", token);
+      router.push("/");
+
+      resetForm();
+    } catch (error) {
+      if (error.statusCode === 409) {
+        console.log("Ошибка регистрации");
+        // notify(t("warnings.errSignup"));
+        // setErrors({
+        //   username: t("warnings.errSignup"),
+        // });
+        // notify(t("warnings.errNetwork"));
+      }
+    }
   };
 
   return (
