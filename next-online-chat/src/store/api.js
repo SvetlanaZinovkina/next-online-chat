@@ -31,8 +31,39 @@ const api = createApi({
         body: credentials,
       }),
     }),
-    getChannels: builder.query({
-      query: () => routes.channelsPath(),
+    getUsers: builder.query({
+      query: () => routes.getUsers(),
+    }),
+    getUserData: builder.query({
+      query: () => routes.getUser(),
+    }),
+    editUsername: builder.mutation({
+      query: ({ id, newUsername }) => ({
+        url: routes.updateUsername(id),
+        method: "PATCH",
+        body: { username: newUsername },
+      }),
+    }),
+    editEmail: builder.mutation({
+      query: ({ id, newEmail }) => ({
+        url: routes.updateEmail(id),
+        method: "PATCH",
+        body: { email: newEmail },
+      }),
+    }),
+    editPassword: builder.mutation({
+      query: ({ id, newPassword }) => ({
+        url: routes.updatPassword(id),
+        method: "PATCH",
+        body: { password: newPassword },
+      }),
+    }),
+    editAvatar: builder.mutation({
+      query: ({ id, formData }) => ({
+        url: routes.updateAvatar(id),
+        method: "PATCH",
+        body: formData,
+      }),
     }),
     addChannel: builder.mutation({
       query: (newChannel) => ({
@@ -77,7 +108,12 @@ const api = createApi({
 export const {
   useCreateUserMutation,
   useLoginMutation,
-  useGetChannelsQuery,
+  useGetUsersQuery,
+  useGetUserDataQuery,
+  useEditUsernameMutation,
+  useEditEmailMutation,
+  useEditPasswordMutation,
+  useEditAvatarMutation,
   useAddChannelMutation,
   useEditChannelMutation,
   useRemoveChannelMutation,

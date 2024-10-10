@@ -25,6 +25,7 @@ body {
   font-family: Comfortaa, sans-serif;
   ::-webkit-scrollbar {
     width: 5px;
+    height: 5px;
     background-color: #390051;
   }
   ::-webkit-scrollbar-thumb {

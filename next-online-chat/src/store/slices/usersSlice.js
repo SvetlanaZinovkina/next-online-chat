@@ -3,25 +3,18 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 const initialState = {
-  id: null,
-  username: "",
-  role: "",
-  token: "",
-  avatar_path: "",
+  users: [],
 };
 
-const userSlice = createSlice({
-  name: "user",
+const usersSlice = createSlice({
+  name: "users",
   initialState,
   reducers: {
-    setUser(state, action) {
-      return { ...state, ...action.payload };
-    },
-    logoutUser(state) {
-      return initialState;
+    setUsers(state, action) {
+      state.users = action.payload;
     },
   },
 });
 
-export const { setUser, logoutUser } = userSlice.actions;
-export default userSlice.reducer;
+export const { setUsers } = usersSlice.actions;
+export default usersSlice.reducer;

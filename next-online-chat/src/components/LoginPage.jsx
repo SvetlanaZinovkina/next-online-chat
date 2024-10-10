@@ -7,7 +7,7 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import Cookies from "js-cookie";
 import * as Yup from "yup";
 import routes from "../routes/routes";
-import { setUser } from "@/store/slices/usersSlice";
+import { setUser } from "@/store/slices/userSlice";
 
 const LoginPage = () => {
   const [login] = useLoginMutation();

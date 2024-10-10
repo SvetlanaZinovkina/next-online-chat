@@ -7,13 +7,13 @@ import Menu from "@/components/Menu";
 import Chat from "@/components/Chat";
 import { socket } from "../socket";
 import routes from "@/routes/routes";
+import Button from "@/components/ui/Button";
 
 export default function Home() {
   const router = useRouter();
 
   useEffect(() => {
-    const token = Cookies.get('token');
-    console.log(token);
+    const token = Cookies.get("token");
 
     if (!token) router.push(routes.signUpPage());
 
@@ -33,6 +33,7 @@ export default function Home() {
 
   return (
     <main className="flex flex-row p-7 container w-screen h-screen">
+      <Button />
       <Menu />
       <Chat />
     </main>

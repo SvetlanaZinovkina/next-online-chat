@@ -7,7 +7,7 @@ import Cookies from "js-cookie";
 import * as Yup from "yup";
 import routes from "../routes/routes";
 import { useCreateUserMutation } from "@/store/api";
-import { setUser } from "@/store/slices/usersSlice";
+import { setUser } from "@/store/slices/userSlice";
 
 const SignUpPage = () => {
   const [createUser] = useCreateUserMutation();
@@ -28,9 +28,9 @@ const SignUpPage = () => {
       .required("Обязательное поле"),
   });
 
-  const handleSubmit = async ({ username, email, password }, { resetForm }) => {
+  const handleSubmit = async ({ userName, email, password }, { resetForm }) => {
     try {
-      const response = await createUser({ username, email, password });
+      const response = await createUser({ userName, email, password });
       if (!response || response.error) {
         throw new Error(response.error || "Unknown error");
       }
@@ -38,17 +38,12 @@ const SignUpPage = () => {
       Cookies.set("token", token);
       dispatch(setUser({ token, id: user_id, username, role, avatar_path }));
 
-      router.push("/");
+      router.push(routes.mainPage());
 
       resetForm();
     } catch (error) {
       if (error.statusCode === 409) {
         console.log("Ошибка регистрации");
-        // notify(t("warnings.errSignup"));
-        // setErrors({
-        //   username: t("warnings.errSignup"),
-        // });
-        // notify(t("warnings.errNetwork"));
       }
     }
   };
